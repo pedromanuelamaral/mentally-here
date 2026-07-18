@@ -1,0 +1,1150 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My Safety Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: oklch(97% 0.008 60);
+    --bg-card: oklch(99% 0.005 60);
+    --bg-card-hover: oklch(100% 0.003 60);
+    --text-primary: oklch(18% 0.01 60);
+    --text-secondary: oklch(42% 0.01 60);
+    --text-muted: oklch(62% 0.008 60);
+    --border: oklch(88% 0.01 60);
+    --border-focus: oklch(52% 0.08 60);
+    --accent: oklch(52% 0.10 60);
+    --accent-subtle: oklch(92% 0.04 60);
+    --danger: oklch(52% 0.14 25);
+    --danger-subtle: oklch(94% 0.04 25);
+    --space-xs: 4px; --space-sm: 8px; --space-md: 16px;
+    --space-lg: 24px; --space-xl: 32px; --space-2xl: 48px;
+    --radius: 10px; --radius-sm: 6px;
+    --font-serif: 'Fraunces', Georgia, serif;
+    --font-sans: 'DM Sans', system-ui, sans-serif;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="dark"] {
+    --bg: oklch(14% 0.01 60);
+    --bg-card: oklch(18% 0.01 60);
+    --bg-card-hover: oklch(21% 0.01 60);
+    --text-primary: oklch(93% 0.008 60);
+    --text-secondary: oklch(68% 0.008 60);
+    --text-muted: oklch(50% 0.008 60);
+    --border: oklch(26% 0.01 60);
+    --border-focus: oklch(68% 0.08 60);
+    --accent: oklch(72% 0.10 60);
+    --accent-subtle: oklch(22% 0.04 60);
+    --danger: oklch(68% 0.14 25);
+    --danger-subtle: oklch(20% 0.04 25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+    transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: var(--space-md) var(--space-xl);
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+
+  .topbar-title {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+  }
+
+  .topbar-actions { display: flex; gap: var(--space-sm); align-items: center; }
+
+  .icon-btn {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s var(--ease-out);
+    position: relative;
+    font-size: 1rem;
+  }
+  .icon-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--border-focus); transform: translateY(-1px); }
+  .icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .icon-btn:active { transform: translateY(0); }
+
+  /* Dropdown */
+  .dropdown { position: relative; }
+  .dropdown-menu {
+    position: absolute; top: calc(100% + 6px); right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-sm);
+    min-width: 200px;
+    opacity: 0; transform: translateY(-8px) scale(0.97);
+    pointer-events: none;
+    transition: all 0.2s var(--ease-out);
+    z-index: 200;
+    box-shadow: 0 8px 32px oklch(0% 0 0 / 0.08);
+  }
+  .dropdown.open .dropdown-menu { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+
+  .dropdown-item {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+    transition: background 0.1s;
+    cursor: pointer;
+    border: none; background: none; width: 100%; text-align: left;
+  }
+  .dropdown-item:hover { background: var(--accent-subtle); }
+  .dropdown-label {
+    font-size: 0.7rem; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+    padding: var(--space-sm) var(--space-md) var(--space-xs);
+  }
+  .dropdown-divider { height: 1px; background: var(--border); margin: var(--space-xs) 0; }
+
+  /* ── MAIN LAYOUT ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-2xl) var(--space-xl);
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    max-width: 42ch;
+    margin: 0 auto;
+  }
+
+  /* ── GRID ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  @media (max-width: 640px) {
+    .grid { grid-template-columns: 1fr; }
+    .container { padding: var(--space-lg) var(--space-md); }
+    .topbar { padding: var(--space-md); }
+  }
+
+  .full-width { grid-column: 1 / -1; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-xl);
+    transition: background 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
+  }
+
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: var(--space-lg);
+  }
+
+  .card-title {
+    font-family: var(--font-serif);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .card-icon { font-size: 1rem; opacity: 0.5; }
+
+  /* ── EDITABLE LIST ── */
+  .item-list { list-style: none; display: flex; flex-direction: column; gap: var(--space-sm); }
+
+  .item-row {
+    display: flex; align-items: flex-start; gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .item-row:hover { background: var(--accent-subtle); }
+
+  .item-number {
+    font-family: var(--font-serif);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 3px;
+    min-width: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .item-text {
+    flex: 1;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-sans);
+    resize: none;
+    min-height: 1.5em;
+    width: 100%;
+    padding: 0;
+  }
+  .item-text:focus { color: var(--text-primary); }
+
+  .item-delete {
+    opacity: 0; width: 24px; height: 24px;
+    border: none; background: none; cursor: pointer;
+    color: var(--text-muted); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.15s, color 0.15s, background 0.15s;
+    flex-shrink: 0; font-size: 0.875rem;
+  }
+  .item-row:hover .item-delete { opacity: 1; }
+  .item-delete:hover { color: var(--danger); background: var(--danger-subtle); }
+
+  .add-item-btn {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-sm);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    background: none; cursor: pointer;
+    color: var(--text-muted); font-size: 0.875rem;
+    font-family: var(--font-sans);
+    width: 100%; text-align: left;
+    transition: all 0.15s var(--ease-out);
+    margin-top: var(--space-sm);
+  }
+  .add-item-btn:hover { border-color: var(--border-focus); color: var(--text-primary); background: var(--accent-subtle); }
+
+  /* ── CONTACT ITEMS ── */
+  .contact-row {
+    display: flex; align-items: center; gap: var(--space-md);
+    padding: var(--space-sm) var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: background 0.15s;
+  }
+  .contact-row:hover { background: var(--accent-subtle); }
+
+  .contact-name {
+    font-size: 0.9375rem; color: var(--text-primary);
+    font-family: var(--font-sans);
+    background: transparent; border: none; outline: none;
+    width: 130px; font-weight: 500;
+  }
+  .contact-phone {
+    flex: 1; font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-family: var(--font-sans);
+    background: transparent; border: none; outline: none;
+  }
+  .contact-call {
+    width: 32px; height: 32px; border-radius: var(--radius-sm);
+    background: var(--accent-subtle); border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 0.875rem;
+    transition: all 0.15s; flex-shrink: 0;
+    text-decoration: none;
+  }
+  .contact-call:hover { background: var(--accent); color: var(--bg); }
+
+  .section-label {
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: var(--space-sm); margin-top: var(--space-md);
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  /* ── CHECKLIST ── */
+  .checklist-group { margin-bottom: var(--space-md); }
+
+  .checklist-location-header {
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: var(--space-sm);
+    user-select: none;
+  }
+  .checklist-location-header span {
+    font-size: 0.875rem; font-weight: 500; color: var(--text-secondary);
+  }
+  .chevron { font-size: 0.75rem; color: var(--text-muted); transition: transform 0.2s var(--ease-out); }
+  .checklist-group.collapsed .checklist-items { display: none; }
+  .checklist-group.collapsed .chevron { transform: rotate(-90deg); }
+
+  .check-row {
+    display: flex; align-items: center; gap: var(--space-md);
+    padding: var(--space-sm) var(--space-sm);
+    border-radius: var(--radius-sm); cursor: pointer;
+    transition: background 0.15s;
+  }
+  .check-row:hover { background: var(--accent-subtle); }
+
+  .check-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; background: transparent;
+    cursor: pointer;
+  }
+  .check-row.checked .check-box {
+    background: var(--accent); border-color: var(--accent); color: var(--bg);
+  }
+  .check-label {
+    font-size: 0.9375rem; color: var(--text-primary);
+    transition: color 0.15s;
+    font-family: var(--font-sans);
+    background: transparent; border: none; outline: none; flex: 1;
+  }
+  .check-row.checked .check-label { color: var(--text-muted); text-decoration: line-through; }
+
+  /* ── REASONS TO LIVE ── */
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .reason-card {
+    background: var(--accent-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+    min-height: 100px;
+    display: flex; flex-direction: column;
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+  }
+  .reason-card:hover { border-color: var(--border-focus); }
+
+  .reason-number {
+    font-family: var(--font-serif);
+    font-size: 2rem; font-weight: 300;
+    color: var(--border-focus);
+    opacity: 0.4;
+    margin-bottom: var(--space-sm);
+    line-height: 1;
+  }
+
+  .reason-text {
+    flex: 1; font-size: 0.9375rem;
+    line-height: 1.6; color: var(--text-primary);
+    font-family: var(--font-sans);
+    background: transparent; border: none; outline: none;
+    resize: none; width: 100%;
+  }
+
+  .reason-delete {
+    position: absolute; top: var(--space-sm); right: var(--space-sm);
+    opacity: 0; width: 24px; height: 24px;
+    border: none; background: none; cursor: pointer;
+    color: var(--text-muted); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.15s, color 0.15s;
+  }
+  .reason-card:hover .reason-delete { opacity: 1; }
+  .reason-delete:hover { color: var(--danger); }
+
+  .reason-add {
+    background: transparent;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-lg);
+    min-height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-muted); font-size: 1.5rem;
+    transition: all 0.15s var(--ease-out);
+    font-family: var(--font-sans);
+  }
+  .reason-add:hover { border-color: var(--border-focus); color: var(--text-primary); background: var(--accent-subtle); }
+
+  /* ── SAVE BAR ── */
+  .save-bar {
+    position: fixed; bottom: env(safe-area-inset-bottom, 0); left: 0; right: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: var(--space-md) var(--space-xl);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--space-md);
+    z-index: 99;
+    transition: background 0.3s var(--ease-out);
+  }
+
+  .save-hint { font-size: 0.8125rem; color: var(--text-muted); }
+
+  .save-btn {
+    display: flex; align-items: center; gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--text-primary); color: var(--bg);
+    border: none; border-radius: var(--radius-sm);
+    font-size: 0.875rem; font-family: var(--font-sans); font-weight: 500;
+    cursor: pointer; transition: all 0.15s var(--ease-out);
+    white-space: nowrap;
+  }
+  .save-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .save-btn:active { transform: translateY(0); }
+
+  .spacer-bottom { height: 80px; }
+
+  /* ── TOOLTIP ── */
+  [data-tooltip] { position: relative; }
+  [data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute; bottom: calc(100% + 6px); right: 0;
+    background: var(--text-primary); color: var(--bg);
+    font-size: 0.75rem; font-family: var(--font-sans);
+    padding: 4px 8px; border-radius: 4px; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity 0.15s;
+  }
+  [data-tooltip]:hover::after { opacity: 1; }
+
+  /* Stagger animations on load */
+  .card { animation: fadeUp 0.5s var(--ease-out) both; }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.10s; }
+  .card:nth-child(3) { animation-delay: 0.15s; }
+  .card:nth-child(4) { animation-delay: 0.20s; }
+  .card:nth-child(5) { animation-delay: 0.25s; }
+  .card:nth-child(6) { animation-delay: 0.30s; }
+  .card:nth-child(7) { animation-delay: 0.35s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="topbar-title">My Safety Plan</span>
+  <div class="topbar-actions">
+
+    <!-- Light/Dark Mode -->
+    <button class="icon-btn" id="themeToggle" data-tooltip="Toggle theme" aria-label="Toggle theme">☀️</button>
+
+    <!-- Quick Support -->
+    <div class="dropdown" id="supportDropdown">
+      <button class="icon-btn" data-tooltip="Quick support" aria-label="Quick support" onclick="toggleDropdown('supportDropdown')">🆘</button>
+      <div class="dropdown-menu" role="menu">
+        <div class="dropdown-label">Quick Support</div>
+        <button class="dropdown-item" onclick="scrollToSection('emotional-support')">💛 Emotional Support</button>
+        <button class="dropdown-item" onclick="scrollToSection('professional-support')">🏥 Professional Support</button>
+      </div>
+    </div>
+
+    <!-- Playlists Distraction -->
+    <div class="dropdown" id="distractionDropdown">
+      <button class="icon-btn" data-tooltip="Art playlist" aria-label="Art playlist" onclick="toggleDropdown('distractionDropdown')">🎨</button>
+      <div class="dropdown-menu" role="menu">
+        <div class="dropdown-label">Quick Distraction</div>
+        <a class="dropdown-item" href="https://open.spotify.com/playlist/37i9dQZF1DWYuC8hQpLKaY" target="_blank">🫂 Hug</a>
+        <a class="dropdown-item" href="https://open.spotify.com/playlist/37i9dQZF1DWSkMjlBZAZ07" target="_blank">🪕 Folk</a>
+        <a class="dropdown-item" href="https://open.spotify.com/playlist/2h6L48JfSTToDaU7gbW7M2" target="_blank">🛋️ Comfort</a>
+        <a class="dropdown-item" href="https://open.spotify.com/playlist/37i9dQZF1EVJHK7Q1TBABQ" target="_blank">🌞 Upbeat</a>
+      </div>
+    </div>
+
+    <!-- Resources -->
+    <div class="dropdown" id="resourcesDropdown">
+      <button class="icon-btn" data-tooltip="Quick resources" aria-label="Quick resources" onclick="toggleDropdown('resourcesDropdown')">🧠</button>
+      <div class="dropdown-menu" role="menu">
+        <div class="dropdown-label">Quick Resources</div>
+        <a class="dropdown-item" href="https://open.spotify.com/playlist/37i9dQZF1DX0E9XMGembJo" target="_blank">💊 SSRI Playlist</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<main class="container">
+
+  <div class="hero">
+    <h1 class="hero-title">My Safety Plan</h1>
+    <p class="hero-quote">
+      "Pain is hard to bear," he cried;<br>
+      "But with patience, day by day,<br>
+      Even this shall pass away."
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <!-- Warning Signs -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Warning Signs</h2>
+        <span class="card-icon">⚠️</span>
+      </div>
+      <ul class="item-list" id="signs-list"><li class="item-row">
+      <span class="item-number">1</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 0, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 1]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 0)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">2</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 1, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 2]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 1)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">3</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 2, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 3]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 2)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">4</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 3, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 4]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 3)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">5</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 4, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 5]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 4)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">6</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 5, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 6]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 5)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">7</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 6, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 7]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 6)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">8</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('signs', 7, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert warning sign 8]</textarea>
+      <button class="item-delete" onclick="deleteItem('signs', 7)" aria-label="Delete">✕</button>
+    </li></ul>
+      <button class="add-item-btn" onclick="addItem('signs')">＋ Add sign</button>
+    </div>
+
+    <!-- Coping Strategies -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Coping Strategies</h2>
+        <span class="card-icon">🌿</span>
+      </div>
+      <ul class="item-list" id="strategies-list"><li class="item-row">
+      <span class="item-number">1</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 0, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 1]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 0)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">2</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 1, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 2]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 1)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">3</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 2, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 3]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 2)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">4</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 3, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 4]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 3)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">5</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 4, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 5]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 4)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">6</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 5, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert coping strategy 6]</textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 5)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">7</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('strategies', 6, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;"></textarea>
+      <button class="item-delete" onclick="deleteItem('strategies', 6)" aria-label="Delete">✕</button>
+    </li></ul>
+      <button class="add-item-btn" onclick="addItem('strategies')">＋ Add strategy</button>
+    </div>
+
+    <!-- Emotional Support -->
+    <div class="card" id="emotional-support">
+      <div class="card-header">
+        <h2 class="card-title">Emotional Support</h2>
+        <span class="card-icon">💛</span>
+      </div>
+      <div id="emotional-contacts"><div class="contact-row">
+      <input class="contact-name" value="[Insert person name]" placeholder="Name" oninput="updateContact('emotional', 0, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('emotional', 0, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="tel:[Insert phone]" target="_self" aria-label="Call [Insert person name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert person name]" placeholder="Name" oninput="updateContact('emotional', 1, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('emotional', 1, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="tel:[Insert phone]" target="_self" aria-label="Call [Insert person name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert person name]" placeholder="Name" oninput="updateContact('emotional', 2, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('emotional', 2, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="tel:[Insert phone]" target="_self" aria-label="Call [Insert person name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="" placeholder="Name" oninput="updateContact('emotional', 3, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="" placeholder="Phone or link" oninput="updateContact('emotional', 3, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="#" target="_self" aria-label="Call">📞</a>
+    </div></div>
+      <button class="add-item-btn" onclick="addContact('emotional')">＋ Add person</button>
+    </div>
+
+    <!-- Professional Support -->
+    <div class="card" id="professional-support">
+      <div class="card-header">
+        <h2 class="card-title">Professional Support</h2>
+        <span class="card-icon">🏥</span>
+      </div>
+      <div id="professional-contacts"><div class="contact-row">
+      <input class="contact-name" value="[Insert professional name]" placeholder="Name" oninput="updateContact('professional', 0, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('professional', 0, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="#" target="_self" aria-label="Call [Insert professional name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert professional name]" placeholder="Name" oninput="updateContact('professional', 1, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('professional', 1, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="#" target="_self" aria-label="Call [Insert professional name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert professional name]" placeholder="Name" oninput="updateContact('professional', 2, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('professional', 2, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="https://example.com" target="_blank" aria-label="Call [Insert professional name]">🔗</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert professional name]" placeholder="Name" oninput="updateContact('professional', 3, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('professional', 3, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="#" target="_self" aria-label="Call [Insert professional name]">📞</a>
+    </div><div class="contact-row">
+      <input class="contact-name" value="[Insert professional name]" placeholder="Name" oninput="updateContact('professional', 4, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="[Insert phone or link]" placeholder="Phone or link" oninput="updateContact('professional', 4, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="tel:112" target="_self" aria-label="Call [Insert professional name]">📞</a>
+    </div></div>
+      <button class="add-item-btn" onclick="addContact('professional')">＋ Add contact</button>
+    </div>
+
+    <!-- Comfort Places -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Comfort Places</h2>
+        <span class="card-icon">🏡</span>
+      </div>
+      <ul class="item-list" id="places-list"><li class="item-row">
+      <span class="item-number">1</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('places', 0, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert comfort place 1]</textarea>
+      <button class="item-delete" onclick="deleteItem('places', 0)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">2</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('places', 1, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert comfort place 2]</textarea>
+      <button class="item-delete" onclick="deleteItem('places', 1)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">3</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('places', 2, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert comfort place 3]</textarea>
+      <button class="item-delete" onclick="deleteItem('places', 2)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">4</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('places', 3, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;">[Insert comfort place 4]</textarea>
+      <button class="item-delete" onclick="deleteItem('places', 3)" aria-label="Delete">✕</button>
+    </li><li class="item-row">
+      <span class="item-number">5</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('places', 4, this.value); autoResize(this)" onblur="saveState()" style="height: 23px;"></textarea>
+      <button class="item-delete" onclick="deleteItem('places', 4)" aria-label="Delete">✕</button>
+    </li></ul>
+      <button class="add-item-btn" onclick="addItem('places')">＋ Add place</button>
+    </div>
+
+    <!-- Quick Checklists -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Quick Checklists</h2>
+        <span class="card-icon">✅</span>
+      </div>
+      <div id="checklists-container"><div class="checklist-group">
+      <div class="checklist-location-header" onclick="toggleChecklist(0)">
+        <span>📍 [Insert location 1]</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="checklist-items">
+        
+          <div class="check-row" onclick="toggleCheck(0, 0)">
+            <div class="check-box"></div>
+            <span class="check-label">[Insert checklist item 1]</span>
+          </div>
+        
+          <div class="check-row" onclick="toggleCheck(0, 1)">
+            <div class="check-box"></div>
+            <span class="check-label">[Insert checklist item 2]</span>
+          </div>
+        
+      </div>
+    </div><div class="checklist-group">
+      <div class="checklist-location-header" onclick="toggleChecklist(1)">
+        <span>📍 [Insert location 2]</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="checklist-items">
+        
+          <div class="check-row" onclick="toggleCheck(1, 0)">
+            <div class="check-box"></div>
+            <span class="check-label">[Insert checklist item 3]</span>
+          </div>
+        
+          <div class="check-row" onclick="toggleCheck(1, 1)">
+            <div class="check-box"></div>
+            <span class="check-label">[Insert checklist item 4]</span>
+          </div>
+        
+      </div>
+    </div></div>
+    </div>
+
+    <!-- Reasons to Live — full width -->
+    <div class="card full-width">
+      <div class="card-header">
+        <h2 class="card-title">Reasons to Live</h2>
+        <span class="card-icon">✨</span>
+      </div>
+      <div class="reasons-grid" id="reasons-grid"><div class="reason-card">
+      <div class="reason-number">01</div>
+      <textarea class="reason-text" rows="3" oninput="updateReason(0, this.value); autoResize(this)" onblur="saveState()" style="height: 72px;">[Insert reason 1]</textarea>
+      <button class="reason-delete" onclick="deleteReason(0)" aria-label="Delete">✕</button>
+    </div><div class="reason-card">
+      <div class="reason-number">02</div>
+      <textarea class="reason-text" rows="3" oninput="updateReason(1, this.value); autoResize(this)" onblur="saveState()" style="height: 72px;">[Insert reason 2]</textarea>
+      <button class="reason-delete" onclick="deleteReason(1)" aria-label="Delete">✕</button>
+    </div><div class="reason-card">
+      <div class="reason-number">03</div>
+      <textarea class="reason-text" rows="3" oninput="updateReason(2, this.value); autoResize(this)" onblur="saveState()" style="height: 72px;">[Insert reason 3]</textarea>
+      <button class="reason-delete" onclick="deleteReason(2)" aria-label="Delete">✕</button>
+    </div><div class="reason-card">
+      <div class="reason-number">04</div>
+      <textarea class="reason-text" rows="3" oninput="updateReason(3, this.value); autoResize(this)" onblur="saveState()" style="height: 72px;"></textarea>
+      <button class="reason-delete" onclick="deleteReason(3)" aria-label="Delete">✕</button>
+    </div><button class="reason-add">＋</button></div>
+    </div>
+
+  </div>
+
+  <div class="spacer-bottom"></div>
+</main>
+
+<div class="save-bar">
+  <span class="save-hint">Changes save automatically · Download to back up</span>
+  <button class="save-btn" onclick="downloadFile()">⬇ Download file</button>
+</div>
+
+<script>
+// ── INJECTED SAVED STATE ──
+try { localStorage.setItem('safetyPlan_v1', "{\"signs\":[\"[Insert warning sign 1]\",\"[Insert warning sign 2]\",\"[Insert warning sign 3]\",\"[Insert warning sign 4]\",\"[Insert warning sign 5]\",\"[Insert warning sign 6]\",\"[Insert warning sign 7]\",\"[Insert warning sign 8]\"],\"strategies\":[\"[Insert coping strategy 1]\",\"[Insert coping strategy 2]\",\"[Insert coping strategy 3]\",\"[Insert coping strategy 4]\",\"[Insert coping strategy 5]\",\"[Insert coping strategy 6]\"],\"emotionalContacts\":[{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"\",\"phone\":\"\"}],\"professionalContacts\":[{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"}],\"places\":[\"[Insert comfort place 1]\",\"[Insert comfort place 2]\",\"[Insert comfort place 3]\",\"[Insert comfort place 4]\",\"[Insert comfort place 5]\"],\"checklists\":[{\"location\":\"[Insert location 1]\",\"open\":true,\"items\":[{\"text\":\"[Insert checklist item 1]\",\"checked\":false},{\"text\":\"[Insert checklist item 2]\",\"checked\":false}]},{\"location\":\"[Insert location 2]\",\"open\":false,\"items\":[{\"text\":\"[Insert checklist item 3]\",\"checked\":false},{\"text\":\"[Insert checklist item 4]\",\"checked\":false}]}],\"reasons\":[\"[Insert reason 1]\",\"[Insert reason 2]\",\"[Insert reason 3]\",\"[Insert reason 4]\"}"); } catch(e) {}
+
+// ── DATA DEFAULTS ──
+const DEFAULTS = {
+  signs: [
+    "[Insert warning sign 1]",
+    "[Insert warning sign 2]",
+    "[Insert warning sign 3]",
+    "[Insert warning sign 4]",
+    "[Insert warning sign 5]",
+    "[Insert warning sign 6]",
+    "[Insert warning sign 7]",
+    "[Insert warning sign 8]"
+  ],
+  strategies: [
+    "[Insert coping strategy 1]",
+    "[Insert coping strategy 2]",
+    "[Insert coping strategy 3]",
+    "[Insert coping strategy 4]",
+    "[Insert coping strategy 5]",
+    "[Insert coping strategy 6]"
+  ],
+  emotionalContacts: [
+    { name: "[Insert person name]", phone: "" },
+    { name: "[Insert person name]", phone: "" },
+    { name: "[Insert person name]", phone: "" }
+  ],
+  professionalContacts: [
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" }
+  ],
+  places: [
+    "[Insert comfort place 1]",
+    "[Insert comfort place 2]",
+    "[Insert comfort place 3]",
+    "[Insert comfort place 4]",
+    "[Insert comfort place 5]"
+  ],
+  checklists: [
+    {
+      location: "[Insert location 1]",
+      open: true,
+      items: [
+        { text: "[Insert checklist item 1]", checked: false },
+        { text: "[Insert checklist item 2]", checked: false }
+      ]
+    },
+    {
+      location: "[Insert location 2]",
+      open: false,
+      items: [
+        { text: "[Insert checklist item 3]", checked: false },
+        { text: "[Insert checklist item 4]", checked: false }
+      ]
+    }
+  ],
+  reasons: [
+    "[Insert reason 1]",
+    "[Insert reason 2]",
+    "[Insert warning sign 1]",
+    "[Insert warning sign 2]",
+    "[Insert warning sign 3]",
+    "[Insert warning sign 4]",
+    "[Insert warning sign 5]",
+    "[Insert warning sign 6]",
+    "[Insert warning sign 7]",
+    "[Insert warning sign 8]"
+  ],
+  strategies: [
+    "[Insert coping strategy 1]",
+    "[Insert coping strategy 2]",
+    "[Insert coping strategy 3]",
+    "[Insert coping strategy 4]",
+    "[Insert coping strategy 5]",
+    "[Insert coping strategy 6]"
+  ],
+  emotionalContacts: [
+    { name: "[Insert person name]", phone: "" },
+    { name: "[Insert person name]", phone: "" },
+    { name: "[Insert person name]", phone: "" }
+  ],
+  professionalContacts: [
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" },
+    { name: "[Insert professional name]", phone: "" }
+  ],
+  places: [
+    "[Insert comfort place 1]",
+    "[Insert comfort place 2]",
+    "[Insert comfort place 3]",
+    "[Insert comfort place 4]",
+    "[Insert comfort place 5]"
+  ],
+  checklists: [
+    {
+      location: "[Insert location 1]",
+      open: true,
+      items: [
+        { text: "[Insert checklist item 1]", checked: false },
+        { text: "[Insert checklist item 2]", checked: false }
+      ]
+    },
+    {
+      location: "[Insert location 2]",
+      open: false,
+      items: [
+        { text: "[Insert checklist item 3]", checked: false },
+        { text: "[Insert checklist item 4]", checked: false }
+      ]
+    }
+  ],
+  reasons: [
+    "[Insert reason 1]",
+    "[Insert reason 2]",
+    "[Insert reason 3]",
+    "[Insert reason 4]"
+  ]
+};
+
+// ── STATE ──
+let state = {};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('safetyPlan_v1');
+    if (saved) state = JSON.parse(saved);
+    else state = JSON.parse(JSON.stringify(DEFAULTS));
+  } catch(e) {
+    state = JSON.parse(JSON.stringify(DEFAULTS));
+  }
+}
+
+function saveState() {
+  try { localStorage.setItem('safetyPlan_v1', JSON.stringify(state)); } catch(e) {}
+}
+
+// ── RENDER HELPERS ──
+function renderAll() {
+  renderList('signs');
+  renderList('strategies');
+  renderList('places');
+  renderContacts('emotional', state.emotionalContacts);
+  renderContacts('professional', state.professionalContacts);
+  renderChecklists();
+  renderReasons();
+}
+
+function renderList(key) {
+  const el = document.getElementById(`${key}-list`);
+  if (!el) return;
+  el.innerHTML = '';
+  const arr = state[key] || [];
+  arr.forEach((text, i) => {
+    const li = document.createElement('li');
+    li.className = 'item-row';
+    li.innerHTML = `
+      <span class="item-number">${i + 1}</span>
+      <textarea class="item-text" rows="1" oninput="updateItem('${key}', ${i}, this.value); autoResize(this)"
+        onblur="saveState()">${escHtml(text)}</textarea>
+      <button class="item-delete" onclick="deleteItem('${key}', ${i})" aria-label="Delete">✕</button>
+    `;
+    el.appendChild(li);
+    const ta = li.querySelector('textarea');
+    autoResize(ta);
+  });
+}
+
+function renderContacts(type, arr) {
+  const el = document.getElementById(`${type}-contacts`);
+  if (!el) return;
+  el.innerHTML = '';
+  arr.forEach((c, i) => {
+    const row = document.createElement('div');
+    row.className = 'contact-row';
+    const isUrl = c.phone && c.phone.startsWith('http');
+    const callHref = c.phone
+      ? (isUrl ? c.phone : `tel:${c.phone.replace(/\s/g, '')}`)
+      : '#';
+    row.innerHTML = `
+      <input class="contact-name" value="${escHtml(c.name)}" placeholder="Name"
+        oninput="updateContact('${type}', ${i}, 'name', this.value)" onblur="saveState()">
+      <input class="contact-phone" value="${escHtml(c.phone)}" placeholder="Phone or link"
+        oninput="updateContact('${type}', ${i}, 'phone', this.value)" onblur="saveState()">
+      <a class="contact-call" href="${callHref}" target="${isUrl ? '_blank' : '_self'}"
+        aria-label="Call ${escHtml(c.name)}">${isUrl ? '🔗' : '📞'}</a>
+    `;
+    el.appendChild(row);
+  });
+}
+
+function renderChecklists() {
+  const el = document.getElementById('checklists-container');
+  if (!el) return;
+  el.innerHTML = '';
+  state.checklists.forEach((group, gi) => {
+    const div = document.createElement('div');
+    div.className = `checklist-group${group.open ? '' : ' collapsed'}`;
+    div.innerHTML = `
+      <div class="checklist-location-header" onclick="toggleChecklist(${gi})">
+        <span>📍 ${escHtml(group.location)}</span>
+        <span class="chevron">▾</span>
+      </div>
+      <div class="checklist-items">
+        ${group.items.map((item, ii) => `
+          <div class="check-row${item.checked ? ' checked' : ''}" onclick="toggleCheck(${gi}, ${ii})">
+            <div class="check-box">${item.checked ? '✓' : ''}</div>
+            <span class="check-label">${escHtml(item.text)}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    el.appendChild(div);
+  });
+}
+
+function renderReasons() {
+  const el = document.getElementById('reasons-grid');
+  if (!el) return;
+  el.innerHTML = '';
+  state.reasons.forEach((text, i) => {
+    const card = document.createElement('div');
+    card.className = 'reason-card';
+    card.innerHTML = `
+      <div class="reason-number">${String(i + 1).padStart(2, '0')}</div>
+      <textarea class="reason-text" rows="3"
+        oninput="updateReason(${i}, this.value); autoResize(this)"
+        onblur="saveState()">${escHtml(text)}</textarea>
+      <button class="reason-delete" onclick="deleteReason(${i})" aria-label="Delete">✕</button>
+    `;
+    el.appendChild(card);
+    const ta = card.querySelector('textarea');
+    autoResize(ta);
+  });
+  // Add button
+  const addBtn = document.createElement('button');
+  addBtn.className = 'reason-add';
+  addBtn.textContent = '＋';
+  addBtn.onclick = () => {
+    state.reasons.push('');
+    saveState();
+    renderReasons();
+  };
+  el.appendChild(addBtn);
+}
+
+// ── MUTATIONS ──
+function updateItem(key, i, value) {
+  state[key][i] = value;
+}
+
+function deleteItem(key, i) {
+  state[key].splice(i, 1);
+  saveState();
+  renderList(key);
+}
+
+function addItem(key) {
+  state[key].push('');
+  saveState();
+  renderList(key);
+  setTimeout(() => {
+    const list = document.getElementById(`${key}-list`);
+    const inputs = list.querySelectorAll('textarea');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 50);
+}
+
+function updateContact(type, i, field, value) {
+  const arr = type === 'emotional' ? state.emotionalContacts : state.professionalContacts;
+  arr[i][field] = value;
+}
+
+function addContact(type) {
+  const arr = type === 'emotional' ? state.emotionalContacts : state.professionalContacts;
+  arr.push({ name: '', phone: '' });
+  saveState();
+  renderContacts(type, arr);
+  setTimeout(() => {
+    const el = document.getElementById(`${type}-contacts`);
+    const inputs = el.querySelectorAll('input');
+    if (inputs.length) inputs[inputs.length - 2].focus();
+  }, 50);
+}
+
+function toggleCheck(gi, ii) {
+  state.checklists[gi].items[ii].checked = !state.checklists[gi].items[ii].checked;
+  saveState();
+  renderChecklists();
+}
+
+function toggleChecklist(gi) {
+  state.checklists[gi].open = !state.checklists[gi].open;
+  renderChecklists();
+}
+
+function updateReason(i, value) { state.reasons[i] = value; }
+
+function deleteReason(i) {
+  state.reasons.splice(i, 1);
+  saveState();
+  renderReasons();
+}
+
+// ── THEME ──
+let darkMode = false;
+document.getElementById('themeToggle').addEventListener('click', () => {
+  darkMode = !darkMode;
+  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : '');
+  document.getElementById('themeToggle').textContent = darkMode ? '🌙' : '☀️';
+});
+
+// ── DROPDOWNS ──
+function toggleDropdown(id) {
+  document.querySelectorAll('.dropdown').forEach(d => {
+    if (d.id !== id) d.classList.remove('open');
+  });
+  document.getElementById(id).classList.toggle('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')) {
+    document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
+
+// ── SCROLL TO SECTION ──
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+}
+
+// ── AUTO RESIZE TEXTAREA ──
+function autoResize(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+
+// ── ESCAPE HTML ──
+function escHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ── DOWNLOAD FILE ──
+function downloadFile() {
+  // Embed current state into a fresh copy of this file
+  const stateJson = JSON.stringify(state);
+  const currentHtml = document.documentElement.outerHTML;
+  // Inject state as inline script so it auto-loads without localStorage on new device
+  const injected = currentHtml.replace(
+    '// ── DATA DEFAULTS ──',
+    `// ── INJECTED SAVED STATE ──\ntry { localStorage.setItem('safetyPlan_v1', ${JSON.stringify(stateJson)}); } catch(e) {}\n\n// ── DATA DEFAULTS ──`
+  );
+  const blob = new Blob([injected], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `safety-plan-${new Date().toISOString().slice(0,10)}.html`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── INIT ──
+loadState();
+renderAll();
+</script>
+
+
+</body>
+</html>
