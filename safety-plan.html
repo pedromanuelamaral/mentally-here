@@ -442,11 +442,17 @@
   [data-tooltip] { position: relative; }
   [data-tooltip]::after {
     content: attr(data-tooltip);
-    position: absolute; bottom: calc(100% + 6px); right: 0;
+    position: absolute; bottom: calc(100% + 6px);
+    left: 50%; transform: translateX(-50%);
     background: var(--text-primary); color: var(--bg);
     font-size: 0.75rem; font-family: var(--font-sans);
     padding: 4px 8px; border-radius: 4px; white-space: nowrap;
     opacity: 0; pointer-events: none; transition: opacity 0.15s;
+    max-width: min(200px, calc(100vw - 24px));
+  }
+  /* Rightmost icon (last child) risks overflowing the viewport edge, so anchor it to the right instead of centering */
+  .topbar-actions > [data-tooltip]:last-child::after {
+    left: auto; right: 0; transform: none;
   }
   [data-tooltip]:hover::after { opacity: 1; }
 
@@ -770,8 +776,6 @@
 
 <script>
 // ── INJECTED SAVED STATE ──
-try { localStorage.setItem('safetyPlan_v1', "{\"signs\":[\"[Insert warning sign 1]\",\"[Insert warning sign 2]\",\"[Insert warning sign 3]\",\"[Insert warning sign 4]\",\"[Insert warning sign 5]\",\"[Insert warning sign 6]\",\"[Insert warning sign 7]\",\"[Insert warning sign 8]\"],\"strategies\":[\"[Insert coping strategy 1]\",\"[Insert coping strategy 2]\",\"[Insert coping strategy 3]\",\"[Insert coping strategy 4]\",\"[Insert coping strategy 5]\",\"[Insert coping strategy 6]\"],\"emotionalContacts\":[{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert person name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"\",\"phone\":\"\"}],\"professionalContacts\":[{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"},{\"name\":\"[Insert professional name]\",\"phone\":\"[Insert phone or link]\"}],\"places\":[\"[Insert comfort place 1]\",\"[Insert comfort place 2]\",\"[Insert comfort place 3]\",\"[Insert comfort place 4]\",\"[Insert comfort place 5]\"],\"checklists\":[{\"location\":\"[Insert location 1]\",\"open\":true,\"items\":[{\"text\":\"[Insert checklist item 1]\",\"checked\":false},{\"text\":\"[Insert checklist item 2]\",\"checked\":false}]},{\"location\":\"[Insert location 2]\",\"open\":false,\"items\":[{\"text\":\"[Insert checklist item 3]\",\"checked\":false},{\"text\":\"[Insert checklist item 4]\",\"checked\":false}]}],\"reasons\":[\"[Insert reason 1]\",\"[Insert reason 2]\",\"[Insert reason 3]\",\"[Insert reason 4]\"}"); } catch(e) {}
-
 // ── DATA DEFAULTS ──
 const DEFAULTS = {
   signs: [
