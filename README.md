@@ -46,6 +46,33 @@ Personal and offline-first (mental health/suicide prevention) Safety Plan interf
 - [What is a Safety Plan, video by Therapist Emma McAdam](https://youtu.be/C2Ja4R6Mq4Y)
 - [How to Create your Safety Plan, video by Therapist Kati Morton](https://youtu.be/om5E4K1bCL)
 
+
+# FITNESS HUB
+
+A private, self-hosted, single-file web app that acts as a fitness hub inside this mental health companion project.
+
+**Contents inside:**
+- Broad video library, +122 videos, 10 categories and intents
+- Curation of audio (Music and Audiobooks)
+- Session packaging (Workout + Audio + Recovery)
+- Calendar and To-Do integration
+- Quick checklists by location
+- Reasons to live
+
+**How it works:**
+- Single `.html` file for the entire web app
+  - Vanilla JS. No dependencies.
+  - Any browser. No account or tracking.
+
+**Quick Guide:**
+
+1. **Open the app:** Double-click `index.html` in any browser or open via `file://`.
+2. **Host anywhere (optional):** Deploy as a static site on any web server or hosting service.
+3. **Keyboard Shortcuts:**
+   - Press `/` to focus the search bar from anywhere (auto-expands library if collapsed).
+   - Press `Esc` to dismiss any active modal.
+
+
 ---
 Feel free to make any edits, replacements, suggestions, or requests. This is open-source and free because someone else might need it and find lifesaving help.
 
