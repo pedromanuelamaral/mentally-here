@@ -1,8 +1,8 @@
-name: Deploy HTML Pages to GitHub Pages
+name: Build and Deploy HTML Pages
 
 on:
   push:
-    branches: ["main"]  # Change to "master" if your default branch is named master
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -29,10 +32,10 @@ jobs:
           mkdir -p _site
           touch _site/.nojekyll
 
-          # Copy static assets (css, js, images, etc.) to _site
+          # Copy non-HTML static assets (css, js, images, etc.) to _site
           rsync -av --exclude='_site' --exclude='.git' --exclude='.github' --exclude='*.html' ./ _site/ || true
 
-          # Organize all HTML files into clean URL directories
+          # Process all HTML files
           find . -type f -name "*.html" ! -path "./_site/*" ! -path "./.git/*" | sed 's|^\./||' | while read -r file; do
             filename=$(basename "$file")
             dirname=$(dirname "$file")
@@ -52,7 +55,7 @@ jobs:
             fi
           done
 
-          # If no root index.html exists, generate a landing directory
+          # If no root index.html was provided, generate a list of all pages
           if [ ! -f _site/index.html ]; then
             cat << 'EOF' > _site/index.html
           <!DOCTYPE html>
@@ -62,16 +65,16 @@ jobs:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Pages Index</title>
             <style>
-              body { font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; line-height: 1.6; }
+              body { font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
               h1 { border-bottom: 1px solid #ddd; padding-bottom: 8px; }
-              ul { list-style: none; padding: 0; }
-              li { margin: 10px 0; }
+              ul { list-style-type: none; padding-left: 0; }
+              li { margin: 8px 0; }
               a { color: #0969da; text-decoration: none; font-size: 1.1rem; }
               a:hover { text-decoration: underline; }
             </style>
           </head>
           <body>
-            <h1>Repository Pages</h1>
+            <h1>Published Pages</h1>
             <ul>
           EOF
 
@@ -87,13 +90,6 @@ jobs:
         with:
           path: '_site'
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
