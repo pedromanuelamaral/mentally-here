@@ -1,4 +1,4 @@
-name: Deploy static HTML to GitHub Pages
+name: Build and Deploy HTML Pages
 
 on:
   push:
@@ -21,19 +21,74 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Disable Jekyll
-        run: touch .nojekyll
+      - name: Organize HTML files into respective page directories
+        run: |
+          mkdir -p _site
+          touch _site/.nojekyll
+
+          # Copy non-HTML static assets (css, js, images, etc.) to _site
+          rsync -av --exclude='_site' --exclude='.git' --exclude='.github' --exclude='*.html' ./ _site/ || true
+
+          # Process all HTML files
+          find . -type f -name "*.html" ! -path "./_site/*" ! -path "./.git/*" | sed 's|^\./||' | while read -r file; do
+            filename=$(basename "$file")
+            dirname=$(dirname "$file")
+            name="${filename%.html}"
+
+            if [ "$filename" = "index.html" ]; then
+              mkdir -p "_site/$dirname"
+              cp "$file" "_site/$file"
+            else
+              if [ "$dirname" = "." ]; then
+                mkdir -p "_site/$name"
+                cp "$file" "_site/$name/index.html"
+              else
+                mkdir -p "_site/$dirname/$name"
+                cp "$file" "_site/$dirname/$name/index.html"
+              fi
+            fi
+          done
+
+          # If no root index.html was provided, generate a list of all pages
+          if [ ! -f _site/index.html ]; then
+            cat << 'EOF' > _site/index.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Pages Index</title>
+            <style>
+              body { font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; line-height: 1.5; }
+              h1 { border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+              ul { list-style-type: none; padding-left: 0; }
+              li { margin: 8px 0; }
+              a { color: #0969da; text-decoration: none; font-size: 1.1rem; }
+              a:hover { text-decoration: underline; }
+            </style>
+          </head>
+          <body>
+            <h1>Published Pages</h1>
+            <ul>
+          EOF
+
+            find _site -type f -name "index.html" ! -path "_site/index.html" | sed 's|^_site/||; s|/index.html$||' | sort | while read -r page; do
+              echo "    <li><a href=\"$page/\">/$page/</a></li>" >> _site/index.html
+            done
+
+            echo "  </ul></body></html>" >> _site/index.html
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
